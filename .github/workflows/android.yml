@@ -14,19 +14,12 @@ jobs:
 
       - name: Checkout the code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
-      - name: Extract version from tag
-        uses: damienaicheh/extract-version-from-tag-action@v1.0.0
-
-      - name: Update gradle version for Android
-        uses: damienaicheh/update-android-version-gradle-action@v1.0.0
+      - name: set up JDK 11
+        uses: actions/setup-java@v2
         with:
-          build-gradle-path: './app/build.gradle'
-          version-code:  ${{ env.MAJOR }} * 1000 + ${{ env.MINOR }} * 100 + ${{ env.PATCH }} * 10 + ${{ env.NUMBER_OF_COMMITS }}
-          version-name: '${{ env.MAJOR }}.${{ env.MINOR }}.${{ env.PATCH }}'
-          print-file: true
+          distribution: 'temurin'
+          java-version: '11'
 
       - name: Increase Java heap space
         run: echo "org.gradle.jvmargs=-Xmx4096M" >> gradle.properties
@@ -34,8 +27,22 @@ jobs:
       - name: Clean project
         run: ./gradlew clean
 
+      - name: Run Android Lint
+        run: ./gradlew lint
+
+      - name: Extract version from tag
+        uses: damienaicheh/extract-version-from-tag-action@v1.0.0
+
+      - name: Update gradle version for Android
+        uses: damienaicheh/update-android-version-gradle-action@v1.0.0
+        with:
+          build-gradle-path: "./app/build.gradle"
+          version-code: ${{ env.MAJOR }} * 1000 + ${{ env.MINOR }} * 100 + ${{ env.PATCH }} * 10 + ${{ env.NUMBER_OF_COMMITS }}
+          version-name: "${{ env.MAJOR }}.${{ env.MINOR }}.${{ env.PATCH }}"
+          print-file: true
+
       - name: Assemble
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug
 
       - name: Upload debug artifact
         uses: actions/upload-artifact@v2
