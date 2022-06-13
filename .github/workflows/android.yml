@@ -47,6 +47,8 @@ jobs:
 
       - name: Assemble
         run: ./gradlew assembleDebug
+        with:
+          if-no-files-found: error
 
       - name: Upload debug artifact
         uses: actions/upload-artifact@v2
