@@ -42,7 +42,7 @@ jobs:
 
       - name: Upload debug artifact
         id: uploadArtifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: Upload apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: ./app/build/outputs/apk/debug/app-debug.apk
