@@ -28,9 +28,6 @@ jobs:
           version-name: '${{ env.MAJOR }}.${{ env.MINOR }}.${{ env.PATCH }}'
           print-file: true
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
       - name: Increase Java heap space
         run: echo "org.gradle.jvmargs=-Xmx4096M" >> gradle.properties
 
