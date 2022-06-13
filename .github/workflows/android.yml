@@ -38,10 +38,10 @@ jobs:
         run: ./gradlew clean
 
       - name: Assemble
-        run: ./gradlew assembleDebug
+        run: ./gradlew :app:clean :app:assembleDebug
 
       - name: Upload debug artifact
         uses: actions/upload-artifact@v2
         with:
           name: Upload apk
-          path: ./app/build/outputs/apk/debug/app-debug.apk
+          path: ./app/build/outputs/apk/debug/*.apk
